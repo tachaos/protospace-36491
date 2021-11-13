@@ -1,8 +1,9 @@
 class PrototypesController < ApplicationController
+  before_action :contributor_confirmation, only: [:edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    @prototypes = Prototype.all
+    @prototypes = Prototype.includes(:user)
   end
 
   def new
@@ -26,9 +27,6 @@ class PrototypesController < ApplicationController
 
   def edit
     @prototype = Prototype.find(params[:id])
-    unless @prototype.user_id == current_user.id
-      redirect_to action: :index
-    end
   end
 
   def update
@@ -55,4 +53,7 @@ class PrototypesController < ApplicationController
     params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
   end
 
+  def contributor_confirmation
+    redirect_to root_path unless current_user == @prototype.user
+  end
 end
