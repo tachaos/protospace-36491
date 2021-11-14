@@ -1,5 +1,5 @@
 class PrototypesController < ApplicationController
-  before_action :contributor_confirmation, only: [:edit, :update, :destroy]
+  before_action :move_to_index, only: [:edit, :update]
   before_action :authenticate_user!, except: [:show, :index]
 
   def index
@@ -56,7 +56,9 @@ class PrototypesController < ApplicationController
     params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
   end
 
-  def contributor_confirmation
-    redirect_to root_path unless current_user == @prototype.user
+  def move_to_index
+    unless user_signed_in? == current_user.name
+      redirect_to root_path
+    end
   end
 end
