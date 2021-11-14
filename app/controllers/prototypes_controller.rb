@@ -1,6 +1,5 @@
 class PrototypesController < ApplicationController
   before_action :contributor_confirmation, only: [:edit, :update, :destroy]
-  before_action :authenticate_user!, except: [:index, :show]
 
   def index
     @prototypes = Prototype.includes(:user)
