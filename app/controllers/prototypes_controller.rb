@@ -1,6 +1,6 @@
 class PrototypesController < ApplicationController
   before_action :authenticate_user!, except: [:show, :index]
-  before_action :move_to_index, except: [:index, :edit, :update, :destroy]
+  before_action :move_to_index, except: [:index, :show, :edit, :update, :destroy]
 
   def index
     @prototypes = Prototype.includes(:user)
